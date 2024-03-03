@@ -10,6 +10,8 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.neural_network import MLPRegressor
+import joblib
+import os
 
 # load database function
 def load_data(file_name):
@@ -84,6 +86,10 @@ def evaluate_regressor(regressor, data, dataset_name):
     print() 
     return regressor
 
+# Make folder called models
+models_directory = 'models'
+if not os.path.exists(models_directory):
+    os.makedirs(models_directory)
 ## CLASSFIERS
 
 # Evaluate KNN classifier
@@ -91,20 +97,29 @@ print("Evaluate KNN classifier\n")
 knn_classifier_sbc = evaluate_classifier(KNeighborsClassifier(n_neighbors=5), single_bc, "tictac_single")
 knn_classifier_mbc = evaluate_classifier(KNeighborsClassifier(n_neighbors=5), multi_bc, "tictac_final")
 knn_classifier_fbc = evaluate_classifier(KNeighborsClassifier(n_neighbors=5), final_bc, "tictac_multi")
+joblib.dump(knn_classifier_sbc, os.path.join(models_directory, 'knn_classifier_sbc.pkl'))
+joblib.dump(knn_classifier_mbc, os.path.join(models_directory, 'knn_classifier_mbc.pkl'))
+joblib.dump(knn_classifier_fbc, os.path.join(models_directory, 'knn_classifier_fbc.pkl'))
 print() 
 
 # Evaluate MLP classifier
 print("Evaluate MLP classifier\n") 
-knn_classifier_sbc = evaluate_classifier(MLPClassifier(max_iter=10000), single_bc, "tictac_single")
-knn_classifier_mbc = evaluate_classifier(MLPClassifier(max_iter=10000), multi_bc, "tictac_final")
-knn_classifier_fbc = evaluate_classifier(MLPClassifier(max_iter=10000), final_bc, "tictac_multi")
+mlp_classifier_sbc = evaluate_classifier(MLPClassifier(max_iter=10000), single_bc, "tictac_single")
+mlp_classifier_mbc = evaluate_classifier(MLPClassifier(max_iter=10000), multi_bc, "tictac_final")
+mlp_classifier_fbc = evaluate_classifier(MLPClassifier(max_iter=10000), final_bc, "tictac_multi")
+joblib.dump(mlp_classifier_sbc, os.path.join(models_directory,'mlp_classifier_sbc.pkl'))
+joblib.dump(mlp_classifier_mbc, os.path.join(models_directory, 'mlp_classifier_mbc.pkl'))
+joblib.dump(mlp_classifier_fbc, os.path.join(models_directory,'mlp_classifier_fbc.pkl'))
 print() 
 
 # Evaluate SVM classifier
 print("Evaluate SVM classifier\n")
-knn_classifier_sbc = evaluate_classifier(LinearSVC(dual=True), single_bc, "tictac_single")
-knn_classifier_mbc = evaluate_classifier(LinearSVC(dual=True), multi_bc, "tictac_final")
-knn_classifier_fbc = evaluate_classifier(LinearSVC(dual=True), final_bc, "tictac_multi")
+svm_classifier_sbc = evaluate_classifier(LinearSVC(dual=True), single_bc, "tictac_single")
+svm_classifier_mbc = evaluate_classifier(LinearSVC(dual=True), multi_bc, "tictac_final")
+svm_classifier_fbc = evaluate_classifier(LinearSVC(dual=True), final_bc, "tictac_multi")
+joblib.dump(svm_classifier_sbc, os.path.join(models_directory,'svm_classifier_sbc.pkl'))
+joblib.dump(svm_classifier_mbc, os.path.join(models_directory,'svm_classifier_mbc.pkl'))
+joblib.dump(svm_classifier_fbc, os.path.join(models_directory,'svm_classifier_fbc.pkl'))
 print() 
 
 ## REGRESSORS
@@ -115,7 +130,9 @@ linear_regressor = evaluate_regressor(LinearRegression(), multi_bc, "multi_bc")
 print("Evaluate MLP regressor\n")
 mlp_regressor = evaluate_regressor(MLPRegressor(max_iter=10000), multi_bc, "multi_bc")
 print() 
+joblib.dump(knn_regressor, os.path.join(models_directory,'knn_regressor.pkl'))
+joblib.dump(linear_regressor, os.path.join(models_directory,'linear_regressor.pkl'))
+joblib.dump(mlp_regressor, os.path.join(models_directory,'mlp_regressor.pkl'))
 
 
-# TODO:
-#COMMAND LINE BOARD GAME
+
